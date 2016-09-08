@@ -1,0 +1,28 @@
+requires: 'BUDDY', 'GCC', 'OS', 'COPY', 'LIBRARY', 'TEST_CATCH', 'PREPROCESSOR';
+
+name: 'Test';
+version: '1.0.1';
+
+bin('bin/');
+export('export/', 'test/');
+import('import/','im/');
+
+variant dev(OS: 'WIN') {
+    srcSet('src/'),
+    includes('include/'),
+    isLib(true),
+    before_run: BUDDY(clean) & PREPROCESSOR(run, TEST='TEST@Test') & TEST_CATCH(),
+    run: BUDDY(build),
+    after_run: COPY(run, from: '$includes/header.h', to: '$export/header.h')
+};
+
+variant test {
+    srcSet("src/"),
+    includes("include/"),
+    isLib: false,
+    run: TEST_CATCH()
+};
+
+dependencies {
+    conan "Poco/1.7.3@lasote/stable"
+};

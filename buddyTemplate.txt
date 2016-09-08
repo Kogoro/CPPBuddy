@@ -1,0 +1,17 @@
+requires: 'BUDDY', 'GCC';
+
+name: '$name';
+version: '0.0.1';
+
+bin('bin/');
+
+variant dev {
+    srcSet('src/'),
+    includes('include/'),
+    before_run: BUDDY(clean),
+    run: BUDDY(build),
+    after_run:
+};
+
+dependencies {
+};

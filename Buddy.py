@@ -3,14 +3,23 @@ import os
 import shutil
 from string import Template
 from BuddyAnalyzer import *
+from plugins.BuddyPluginManager import BuddyPluginManager
 
 
 class Buddy:
-    def __init__(self):
-        print "init"
+    def __init__(self, file):
+        self.project = BuddyAnalyzer(file).analyze()
+        self.plugins = BuddyPluginManager()
 
     def execute(self, task):
         print "execute {}".format(task)
+        if len(task)>1:
+            print task[0]
+            if len(task[1])>1:
+                for i in task[1]:
+                    print i
+            else:
+                pass
 
 
 def main():
@@ -23,7 +32,6 @@ def main():
 
     parser.add_argument("task", default="run", help="specifies task (e.g. init,run,clean,show)")
     parser.add_argument("arg", nargs="?", default="all", help="argument for the task")
-
 
     args = parser.parse_args()
 
@@ -45,15 +53,15 @@ def main():
             print "File written successfully to {}/buddy.txt".format(cwd)
         return
 
-    buddyProj = BuddyAnalyzer(args.s).analyze()
+    buddy = Buddy(args.s)
 
     if args.task == "show":
         if args.arg == "script" or args.arg == "project":
-            print buddyProj
+            print buddy.project
 
     if args.task == "clean":
         cwd = os.getcwd()
-        outputDir = buddyProj.parameter("bin")
+        outputDir = buddy.project.parameter("bin")
         if os.name == 'nt':
             shutil.rmtree(cwd + "\\" + outputDir)
         else:
@@ -63,15 +71,15 @@ def main():
     if args.task == "run":
         if args.arg == "all":
             print "Build all variants"
-            print buddyProj.variants
+            print buddy.project.variants
         else:
             print "Build variant {}".format(args.arg)
-            for task in buddyProj.variant(args.arg).command('before_run').values:
-                Buddy().execute(task)
-            for task in buddyProj.variant(args.arg).command('run').values:
-                Buddy().execute(task)
-            for task in buddyProj.variant(args.arg).command('after_run').values:
-                Buddy().execute(task)
+            for task in buddy.project.variant(args.arg).command('before_run').values:
+                buddy.execute(task)
+            for task in buddy.project.variant(args.arg).command('run').values:
+                buddy.execute(task)
+            for task in buddy.project.variant(args.arg).command('after_run').values:
+                buddy.execute(task)
 
 
 if __name__ == "__main__":

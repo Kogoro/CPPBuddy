@@ -100,4 +100,5 @@ class IMiscPlugin(IPlugin):
 
     def __init__(self, context):
         super(IMiscPlugin, self).__init__(context)
+        self.register()
         pass

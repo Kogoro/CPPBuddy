@@ -11,8 +11,8 @@ variant dev(OS: 'WIN') {
     srcSet('src/'),
     includes('include/'),
     isLib(true),
-    before_run: BUDDY(clean) & PREPROCESSOR(run, TEST='TEST@Test') & TEST_CATCH(),
-    run: BUDDY(build),
+    before_run: BUDDY(clean) & PREPROCESSOR(run, TEST='TEST@Test') & CATCH(),
+    run: GCC(build),
     after_run: COPY(run, from: '$includes/header.h', to: '$export/header.h')
 };
 

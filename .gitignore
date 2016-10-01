@@ -91,4 +91,11 @@ ENV/
 # other stuff
 old/*
 .gitignore
-/.idea/*
+.idea/*
+/.idea/deployment.xml
+/.idea/misc.xml
+/.idea/vcs.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/
+/.idea/workspace.xml
+/.idea/CPPBuddy.iml

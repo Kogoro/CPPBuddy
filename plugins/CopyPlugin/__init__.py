@@ -9,5 +9,5 @@ class CopyPlugin(IMiscPlugin):
     def getName(self):
         return "COPY"
 
-    def run(self):
+    def run(self, args):
         print "Run COPY"

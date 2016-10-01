@@ -9,5 +9,5 @@ class PreprocessorPlugin(IMiscPlugin):
     def getName(self):
         return "PREPROCESSOR"
 
-    def run(self):
+    def run(self, args):
         print "Run Preprocessor"
